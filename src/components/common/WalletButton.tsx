@@ -1,6 +1,7 @@
 "use client";
 
 import { useWallet } from "@/hooks/usewallet";
+import { Button } from "@/components/ui/button";
 
 export default function WalletButton() {
   const { account, connect, disconnect } = useWallet();
@@ -19,21 +20,22 @@ export default function WalletButton() {
 
   if (account.isConnected) {
     return (
-      <button
-        onClick={() => disconnect.disconnect()}
-        className="w-full rounded-2xl bg-red-500 py-4 text-base font-semibold text-white transition-all duration-300 hover:bg-red-600"
-      >
-        Disconnect Wallet
-      </button>
+<Button
+  onClick={() => disconnect.disconnect()}
+  variant="destructive"
+  className="h-14 w-full rounded-2xl text-base"
+>
+  Disconnect Wallet
+</Button>
     );
   }
 
   return (
-    <button
-      onClick={handleConnect}
-      className="w-full rounded-2xl bg-gradient-to-r from-violet-600 to-purple-500 py-4 text-base font-semibold text-white shadow-[0_0_35px_rgba(139,92,246,.35)] transition-all duration-300 hover:scale-[1.02] hover:from-violet-500 hover:to-purple-400 active:scale-[0.98]"
-    >
-      Connect Wallet
-    </button>
+   <Button
+  onClick={handleConnect}
+  className="h-14 w-full rounded-2xl bg-linear-to-r from-violet-600 via-violet-500 to-purple-500 text-base font-semibold text-white shadow-[0_0_40px_rgba(139,92,246,0.35)] transition-all duration-300 hover:scale-[1.02] hover:from-violet-500 hover:to-purple-400"
+>
+  Connect Wallet
+</Button>
   );
 }
