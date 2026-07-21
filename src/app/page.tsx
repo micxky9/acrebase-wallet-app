@@ -5,10 +5,13 @@ import SupportedWallets from "@/components/common/SupportedWallets";
 import { Card } from "@/components/ui/card";
 import Footer from "@/components/common/footer";
 import FadeIn from "@/components/common/FadeIn";
+import RedirectIfConnected from "@/components/common/RedirectIfConnected";
+
 
 export default function Home() {
   return (
 <main className="relative flex min-h-screen items-center justify-center bg-[#070710] px-6">
+ <RedirectIfConnected />
     <BackgroundGlow />
       <Logo />
       <div className="absolute inset-0 overflow-hidden">

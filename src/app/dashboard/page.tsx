@@ -1,9 +1,18 @@
-export default function DashboardPage() {
+"use client";
+
+import { useWallet } from "@/hooks/usewallet";
+import { Button } from "@/components/ui/button";
+import ProtectedRoute from "@/components/common/ProtectedRoute";
+
+
+export default function DisconnectButton() {
+  const { disconnect } = useWallet();
+
   return (
-    <main className="flex min-h-screen items-center justify-center bg-[#070710] text-white">
-      <h1 className="text-4xl font-bold">
-        Dashboard
-      </h1>
-    </main>
+    <ProtectedRoute>
+    <Button onClick={() => disconnect.disconnect()}>
+      Disconnect Wallet
+    </Button>
+     </ ProtectedRoute >
   );
 }

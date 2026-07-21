@@ -11,11 +11,8 @@ import { baseSepolia } from "wagmi/chains";
 
 export function useWallet() {
   const account = useAccount();
-
   const connect = useConnect();
-
   const disconnect = useDisconnect();
-
   const switchChain = useSwitchChain();
 
   const isWrongNetwork =
@@ -24,13 +21,9 @@ export function useWallet() {
 
   return {
     account,
-
     connect,
-
     disconnect,
-
     switchChain,
-
     isWrongNetwork,
   };
 }
