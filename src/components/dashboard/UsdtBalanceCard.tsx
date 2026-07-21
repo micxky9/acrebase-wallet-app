@@ -13,8 +13,9 @@ export default function TokenCard({
   balance,
   color,
 }: TokenCardProps) {
+
   return (
-    <Card className="rounded-3xl border border-white/10 bg-[#151125]/65 p-6 backdrop-blur-3xl transition-all duration-300 hover:border-violet-500/30 hover:-translate-y-1">
+    <Card className="rounded-3xl border border-white/10 bg-[#151125]/65 p-6 backdrop-blur-3xl">
 
       <div className="flex items-center justify-between">
 
@@ -28,6 +29,7 @@ export default function TokenCard({
           </h3>
         </div>
 
+
         <div
           className="flex h-14 w-14 items-center justify-center rounded-2xl text-lg font-bold text-white"
           style={{ backgroundColor: color }}
@@ -36,6 +38,7 @@ export default function TokenCard({
         </div>
 
       </div>
+
     </Card>
   );
 }

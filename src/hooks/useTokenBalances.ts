@@ -8,32 +8,42 @@ export function useTokenBalances() {
 
   const { data, isLoading, refetch } = useReadContracts({
     allowFailure: false,
+
     contracts: [
       {
         ...contracts.usdt,
         functionName: "balanceOf",
         args: address ? [address] : undefined,
       },
+
       {
         ...contracts.acre,
         functionName: "balanceOf",
         args: address ? [address] : undefined,
       },
+
       {
         ...contracts.plot,
         functionName: "balanceOf",
         args: address ? [address] : undefined,
       },
+
       {
         ...contracts.yard,
         functionName: "balanceOf",
         args: address ? [address] : undefined,
       },
     ],
+
     query: {
       enabled: !!address,
     },
   });
+
+
+  console.log("Connected address:", address);
+  console.log("Balances:", data);
+
 
   return {
     balances: {
@@ -42,7 +52,9 @@ export function useTokenBalances() {
       plot: data?.[2] ?? BigInt(0),
       yard: data?.[3] ?? BigInt(0),
     },
+
     isLoading,
+
     refetch,
   };
 }

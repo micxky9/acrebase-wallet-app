@@ -3,7 +3,8 @@ import StarsBackground from "@/components/common/StarsBackground";
 import ProtectedRoute from "@/components/common/ProtectedRoute";
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import TokenGrid from "@/components/dashboard/NftCard";
+import NftCollection from "@/components/dashboard/NftCollection"; 
+import BuyCard from "@/components/dashboard/BuyCard";
 
 export default function DashboardPage() {
   return (
@@ -17,7 +18,9 @@ export default function DashboardPage() {
 
           <DashboardHeader />
 
-          <TokenGrid />
+         <NftCollection />
+         
+         <BuyCard />
 
         </div>
 

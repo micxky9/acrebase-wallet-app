@@ -1,78 +1,57 @@
 "use client";
 
-import TokenCard from "./UsdtBalanceCard";
+import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { useTokenBalances } from "@/hooks/useTokenBalances";
-import { formatToken } from "@/lib/format";
+type NftCardProps = {
+  name: string;
+  description: string;
+  balance: number;
+  image: string;
+};
 
-export default function TokenGrid() {
-  const { balances, isLoading } = useTokenBalances();
-
-  if (isLoading) {
-    return (
-      <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <TokenCard
-          symbol="U"
-          name="USDT Balance"
-          balance="Loading..."
-          color="#16A34A"
-        />
-
-        <TokenCard
-          symbol="A"
-          name="ACRE Balance"
-          balance="Loading..."
-          color="#7C3AED"
-        />
-
-        <TokenCard
-          symbol="P"
-          name="PLOT Balance"
-          balance="Loading..."
-          color="#2563EB"
-        />
-
-        <TokenCard
-          symbol="Y"
-          name="YARD Balance"
-          balance="Loading..."
-          color="#EA580C"
-        />
-      </section>
-    );
-  }
-
+export default function NftCard({
+  name,
+  description,
+  balance,
+  image,
+}: NftCardProps) {
   return (
-    <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <Card className="group rounded-3xl border border-white/10 bg-[#151125]/65 p-6 backdrop-blur-3xl transition-all duration-300 hover:-translate-y-1 hover:border-violet-500/30">
 
-      <TokenCard
-        symbol="U"
-        name="USDT Balance"
-        balance={formatToken(BigInt((balances.usdt as unknown as string | number | bigint).toString()), 18)}
-        color="#16A34A"
-      />
+      <div className="flex items-center gap-4">
 
-      <TokenCard
-        symbol="A"
-        name="ACRE Balance"
-        balance={balances.acre.toString()}
-        color="#7C3AED"
-      />
+        <Avatar className="h-14 w-14 rounded-2xl">
+          <AvatarImage src={image} />
+          <AvatarFallback className="bg-violet-600 text-white font-bold">
+            {name.charAt(0)}
+          </AvatarFallback>
+        </Avatar>
 
-      <TokenCard
-        symbol="P"
-        name="PLOT Balance"
-        balance={balances.plot.toString()}
-        color="#2563EB"
-      />
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-white">
+            {name}
+          </h3>
 
-      <TokenCard
-        symbol="Y"
-        name="YARD Balance"
-        balance={balances.yard.toString()}
-        color="#EA580C"
-      />
+          <p className="text-sm text-gray-400">
+            {description}
+          </p>
+        </div>
 
-    </section>
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
+
+        <span className="text-sm text-gray-500">
+          Owned
+        </span>
+
+        <span className="text-2xl font-bold text-white">
+          {balance}
+        </span>
+
+      </div>
+
+    </Card>
   );
 }
