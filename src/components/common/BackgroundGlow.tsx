@@ -21,8 +21,8 @@ export default function BackgroundGlow() {
           absolute
           left-1/2
           top-1/2
-          h-[650px]
-          w-[650px]
+          h-162.5
+          w-162.5
           -translate-x-1/2
           -translate-y-1/2
           rounded-full
@@ -46,8 +46,8 @@ export default function BackgroundGlow() {
           absolute
           -left-44
           -top-44
-          h-[450px]
-          w-[450px]
+          h-112.5
+          w-112.5
           rounded-full
           bg-fuchsia-600/15
           blur-[140px]
@@ -69,8 +69,8 @@ export default function BackgroundGlow() {
           absolute
           -bottom-44
           -right-44
-          h-[500px]
-          w-[500px]
+          h-125
+          w-125
           rounded-full
           bg-indigo-600/15
           blur-[150px]

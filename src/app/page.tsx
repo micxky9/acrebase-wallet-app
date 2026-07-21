@@ -15,14 +15,15 @@ export default function Home() {
       <BackgroundGlow />
       <StarsBackground />
       <Logo />
-<AnimatedCard>        {/* Outer Glow */}
-        <div className="absolute -inset-1 rounded-[34px] bg-gradient-to-r from-violet-600/20 via-fuchsia-500/10 to-violet-600/20 blur-xl" />
+<AnimatedCard>     
+     {/* Outer Glow */}
+        <div className="absolute -inset-1 rounded-[34px] bg-linear-to-r from-violet-600/20 via-fuchsia-500/10 to-violet-600/20 blur-xl" />
 
         <Card
           className="
             relative
             overflow-hidden
-            rounded-[32px]
+            rounded-4xl
             border border-white/10
             bg-[#151125]/65
             p-14
@@ -36,11 +37,11 @@ export default function Home() {
               pointer-events-none
               absolute
               inset-0
-              rounded-[32px]
+              rounded-4xl
               border
               border-white/5
-              bg-gradient-to-b
-              from-white/[0.05]
+              bg-linear-to-b
+              from-white/5
               via-transparent
               to-transparent
             "
@@ -69,7 +70,7 @@ export default function Home() {
 
             <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl">
               Connect your{" "}
-              <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
                 wallet
               </span>
             </h1>

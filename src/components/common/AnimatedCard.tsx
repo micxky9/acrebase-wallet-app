@@ -23,7 +23,7 @@ export default function AnimatedCard({
         duration: 0.7,
         ease: "easeOut",
       }}
-      className="relative z-10 w-full max-w-[760px]"
+      className="relative z-10 w-full max-w-190"
     >
       {children}
     </motion.div>

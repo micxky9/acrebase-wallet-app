@@ -29,7 +29,7 @@ export default function WalletButton() {
         h-14 w-full 
         rounded-2xl 
         border-0
-        bg-gradient-to-r 
+        bg-linear-to-r 
         from-violet-600 
         via-violet-500 
         to-purple-500

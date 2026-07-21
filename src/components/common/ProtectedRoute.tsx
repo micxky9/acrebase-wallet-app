@@ -18,9 +18,6 @@ export default function ProtectedRoute({
     }
   }, [isConnected, router]);
 
-  if (!isConnected) {
-    return null;
-  }
 
   return <>{children}</>;
 }
