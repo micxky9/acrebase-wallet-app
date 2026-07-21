@@ -1,9 +1,9 @@
 import BackgroundGlow from "@/components/common/BackgroundGlow";
 import StarsBackground from "@/components/common/StarsBackground";
 import ProtectedRoute from "@/components/common/ProtectedRoute";
+import DashboardHeader from "../../components/dashboard/DashboardHeader";
 
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import TokenGrid from "@/components/dashboard/TokenGrid";
+import TokenGrid from "@/components/dashboard/NftCard";
 
 export default function DashboardPage() {
   return (

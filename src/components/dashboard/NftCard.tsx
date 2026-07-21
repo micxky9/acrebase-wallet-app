@@ -1,4 +1,4 @@
-import TokenCard from "./TokenCard";
+import TokenCard from "./UsdtBalanceCard";
 
 export default function TokenGrid() {
   return (
