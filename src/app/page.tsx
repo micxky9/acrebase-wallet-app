@@ -1,66 +1,105 @@
 import BackgroundGlow from "@/components/common/BackgroundGlow";
+import StarsBackground from "@/components/common/StarsBackground";
+import RedirectIfConnected from "@/components/common/RedirectIfConnected";
 import Logo from "@/components/common/Logo";
 import WalletButton from "@/components/common/WalletButton";
 import SupportedWallets from "@/components/common/SupportedWallets";
 import { Card } from "@/components/ui/card";
-import Footer from "@/components/common/footer";
-import FadeIn from "@/components/common/FadeIn";
-import RedirectIfConnected from "@/components/common/RedirectIfConnected";
-
+import AnimatedCard from "@/components/common/AnimatedCard";
 
 export default function Home() {
   return (
-<main className="relative flex min-h-screen items-center justify-center bg-[#070710] px-6">
- <RedirectIfConnected />
-    <BackgroundGlow />
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#070710] px-6 py-10">
+      <RedirectIfConnected />
+
+      <BackgroundGlow />
+      <StarsBackground />
       <Logo />
-      <div className="absolute inset-0 overflow-hidden">
-  <div className="absolute left-[10%] top-[15%] h-1 w-1 rounded-full bg-white opacity-70" />
-  <div className="absolute left-[25%] top-[8%] h-1 w-1 rounded-full bg-white opacity-60" />
-  <div className="absolute left-[70%] top-[18%] h-1 w-1 rounded-full bg-white opacity-80" />
-  <div className="absolute left-[82%] top-[10%] h-1 w-1 rounded-full bg-white opacity-70" />
-  <div className="absolute left-[60%] top-[35%] h-1 w-1 rounded-full bg-white opacity-60" />
-  <div className="absolute left-[18%] top-[40%] h-1 w-1 rounded-full bg-white opacity-50" />
-  <div className="absolute left-[88%] top-[50%] h-1 w-1 rounded-full bg-white opacity-70" />
-</div>
-<FadeIn>
-<Card className="relative z-10 w-full max-w-190 rounded-4xl bg-[#151125]/70 p-14 backdrop-blur-3xl">
-     <div className="mt-10 text-center">
-          <p className="mb-4 inline-flex rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-sm text-violet-300">
-            Web3. Made Simple.
-          </p>
+<AnimatedCard>        {/* Outer Glow */}
+        <div className="absolute -inset-1 rounded-[34px] bg-gradient-to-r from-violet-600/20 via-fuchsia-500/10 to-violet-600/20 blur-xl" />
 
-          <h1 className="mt-6 text-5xl font-bold text-white">
-            Connect your{" "}
-            <span className="text-violet-500">wallet</span>
-          </h1>
+        <Card
+          className="
+            relative
+            overflow-hidden
+            rounded-[32px]
+            border border-white/10
+            bg-[#151125]/65
+            p-14
+            backdrop-blur-3xl
+            shadow-[0_20px_80px_rgba(0,0,0,0.45)]
+          "
+        >
+          {/* Glass Highlight */}
+          <div
+            className="
+              pointer-events-none
+              absolute
+              inset-0
+              rounded-[32px]
+              border
+              border-white/5
+              bg-gradient-to-b
+              from-white/[0.05]
+              via-transparent
+              to-transparent
+            "
+          />
 
-          <p className="mt-6 text-lg text-gray-400">
-            Connect your wallet to access your tokens, purchase assets,
-            and transfer with ease.
-          </p>
-        </div>
+          <div className="relative z-10 text-center">
+            <p
+              className="
+                mb-4
+                inline-flex
+                rounded-full
+                border
+                border-violet-400/20
+                bg-violet-500/10
+                px-4
+                py-2
+                text-sm
+                font-medium
+                tracking-wide
+                text-violet-300
+                backdrop-blur-xl
+              "
+            >
+              Web3. Made Simple.
+            </p>
 
-       <div className="mt-12 w-full">
-          <WalletButton />
-       <p className="mt-6 text-center text-sm leading-6 text-gray-500">
-  By connecting, you agree to our{" "}
-  <span className="cursor-pointer text-violet-400 hover:text-violet-300">
-    Terms of Service
-  </span>{" "}
-  and{" "}
-  <span className="cursor-pointer text-violet-400 hover:text-violet-300">
-    Privacy Policy
-  </span>
+            <h1 className="mt-6 text-5xl font-bold leading-tight tracking-tight text-white md:text-6xl">
+              Connect your{" "}
+              <span className="bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">
+                wallet
+              </span>
+            </h1>
 
-</p>
+            <p className="mx-auto mt-6 max-w-xl text-lg leading-8 text-gray-400">
+              Connect your wallet to access your assets, purchase tokens,
+              and securely manage transfers on Base Sepolia.
+            </p>
 
-<SupportedWallets />
+            <div className="mt-14">
+              <WalletButton />
+            </div>
 
-<Footer />
-        </div>
-     </Card>
-     </FadeIn>
+            <p className="mt-6 text-sm leading-6 text-gray-500">
+              By connecting, you agree to our{" "}
+              <span className="cursor-pointer text-violet-400 transition hover:text-violet-300">
+                Terms of Service
+              </span>{" "}
+              and{" "}
+              <span className="cursor-pointer text-violet-400 transition hover:text-violet-300">
+                Privacy Policy
+              </span>
+            </p>
+
+            <div className="mt-10">
+              <SupportedWallets />
+            </div>
+          </div>
+        </Card>
+</AnimatedCard>
     </main>
   );
 }

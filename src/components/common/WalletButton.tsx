@@ -39,9 +39,10 @@ export default function WalletButton() {
         shadow-[0_0_40px_rgba(139,92,246,0.35)]
         transition-all 
         duration-300
-        hover:scale-[1.02]
         hover:from-violet-500
         hover:to-purple-400
+        hover:scale-[1.03]
+        active:scale-[0.98]
       "
     >
       <div className="flex items-center justify-center gap-2">
