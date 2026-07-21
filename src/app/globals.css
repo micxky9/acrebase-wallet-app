@@ -121,15 +121,11 @@ body {
 }
 
 @layer base {
-  * {
-    border-color: var(--color-border);
-    outline-color: var(--color-ring);
-   
-  }
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
-  }
+
+ body {
+  background: #070710;
+  color: white;
+}
   html {
     font-family: var(--font-sans);
   }
