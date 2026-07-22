@@ -52,7 +52,6 @@ export default function BuyModal({
 
 
   const {
-    approveUSDT,
     hash,
     isPending,
     isConfirming,
@@ -146,10 +145,6 @@ toast.loading("Waiting for USDT approval...", {
   id: "buy",
 });
 
-    const txHash = await approveUSDT({
-      spender,
-      amount: totalUSDT,
-    });
     toast.success("USDT approved successfully.", {
   id: "buy",
 });
@@ -175,18 +170,16 @@ toast.loading("Minting NFT...", {
   id: "buy",
 });
 
-await mintNFT({
-  abi: nftAbi,
-  contractAddress: spender,
-  // mintNFT expects a number for quantity
-  quantity: Number(data.quantity),
-});
+  mintNFT({
+    abi: nftAbi,
+    contractAddress: spender,
+    quantity: Number(data.quantity),
+  });
 
 toast.success("NFT purchased successfully!", {
   id: "buy",
 });
 
-// reset form
 reset();
 
 setOpen(false);
@@ -262,7 +255,7 @@ setOpen(false);
           <div>
 
             <Select
-              value={watch("asset")}
+              value={register("asset").value || ""}
               onValueChange={(value) =>
                 
                 setValue("asset", value ?? "")
