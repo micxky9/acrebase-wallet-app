@@ -4,11 +4,10 @@ import { useAccount, useReadContracts } from "wagmi";
 import { contracts } from "@/lib/contract";
 
 export function useTokenBalances() {
-  const { address, isConnected } = useAccount();
+  
+  const { address, } = useAccount();
 
- console.log("Data:", data);
-console.log("Error:", error);
-console.log("Loading:", isLoading);
+
 
   const { data, isLoading, error, refetch } = useReadContracts({
     contracts: [

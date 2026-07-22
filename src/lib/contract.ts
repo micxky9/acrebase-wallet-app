@@ -1,9 +1,9 @@
 import { CONTRACTS } from "@/constants/contracts";
 
 import { usdtAbi } from "@/abi/usdt";
-// import { acreAbi } from "@/abi/acre";
-// import { plotAbi } from "@/abi/plot";
-// import { yardAbi } from "@/abi/yard";
+import { acreAbi } from "@/abi/acre";
+ import { plotAbi } from "@/abi/plot";
+import { yardAbi } from "@/abi/yard";
 
 export const contracts = {
   usdt: {

@@ -47,7 +47,24 @@ export default function DashboardHeader() {
           <Button
             variant="destructive"
             onClick={() => disconnect()}
-            className="rounded-xl"
+            className="
+    rounded-full
+    border
+    border-red-500/30
+    bg-red-500/10
+    px-5
+    py-2
+    text-sm
+    font-medium
+    text-red-400
+    transition-all
+    duration-300
+    hover:border-red-500/60
+    hover:bg-red-500/20
+    hover:text-red-300
+    hover:shadow-lg
+    hover:shadow-red-500/20
+  "
           >
             Disconnect
           </Button>

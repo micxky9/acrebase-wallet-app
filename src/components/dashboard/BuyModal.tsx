@@ -94,11 +94,11 @@ export default function BuyModal({
                 setValue("asset", value ?? "")
               }
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select NFT" />
               </SelectTrigger>
 
-              <SelectContent>
+              <SelectContent className="w-75">
                 <SelectItem value="ACRE">
                   ACRE
                 </SelectItem>
@@ -142,7 +142,7 @@ export default function BuyModal({
             type="submit"
             className="w-full rounded-xl bg-violet-600"
           >
-            Continue
+            Buy NFT
           </Button>
 
         </form>

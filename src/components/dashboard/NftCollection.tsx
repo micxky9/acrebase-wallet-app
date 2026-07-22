@@ -3,6 +3,7 @@
 import NftCard from "./NftCard";
 
 import { useTokenBalances } from "@/hooks/useTokenBalances";
+import { formatToken } from "@/lib/format";
 
 export default function NftCollection() {
   const { balances, isLoading } = useTokenBalances();
@@ -22,47 +23,47 @@ export default function NftCollection() {
 
       <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
 
-        <NftCard
-          name="USDT"
-          description="Payment Token"
-          balance={
-            isLoading
-              ? "Loading..."
-               : balances.usdt.toString()
-          }
-          image="/tokens/usdt.png"
-        />
+       <NftCard
+  name="USDT"
+  description="Payment Token"
+  balance={
+    isLoading
+      ? "Loading..."
+      : formatToken(balances.usdt, 18, "USDT")
+  }
+  image="/tokens/usdt.png"
+/>
 
         <NftCard
           name="ACRE"
           description="Digital Land Asset"
-          balance={
-            isLoading
-              ? "Loading..."
-              : balances.acre.toString()
-          }
+         balance={
+  isLoading
+    ? "Loading..."
+    : formatToken(typeof balances.acre === "bigint" ? balances.acre : 0n, 18, "ACRE")
+}
           image="/tokens/acre.png"
         />
 
-        <NftCard
-          name="PLOT"
-          description="Virtual Plot NFT"
-          balance={
-            isLoading
-              ? "Loading..."
-              : balances.plot.toString()
-          }
-          image="/tokens/plot.png"
-        />
+          <NftCard
+            name="PLOT"
+            description="Virtual Plot NFT"
+           balance={
+    isLoading
+      ? "Loading..."
+      : formatToken(typeof balances.plot === "bigint" ? balances.plot : 0n, 18, "PLOT")
+  }
+            image="/tokens/plot.png"
+          />
 
         <NftCard
           name="YARD"
           description="Premium Yard NFT"
-          balance={
-            isLoading
-              ? "Loading..."
-              : balances.yard.toString()
-          }
+         balance={
+  isLoading
+    ? "Loading..."
+    : formatToken(typeof balances.yard === "bigint" ? balances.yard : 0n, 18, "YARD")
+}
           image="/tokens/yard.png"
         />
 
