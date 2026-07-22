@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/providers/Providers";
 import { DM_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
     >
 <body className={`${dmSans.variable} font-sans antialiased bg-[#080811] text-white`}>
   <Providers>{children}</Providers>
+  <Toaster richColors position="bottom-right" />
 </body>
     </html>
   );

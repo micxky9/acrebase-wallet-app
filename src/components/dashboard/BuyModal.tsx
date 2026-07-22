@@ -13,6 +13,7 @@ import { NFTPrices } from "@/constants/nftPrices";
 import { acreAbi } from "@/abi/acre";
 import { plotAbi } from "@/abi/plot";
 import { yardAbi } from "@/abi/yard";
+import { toast } from "sonner";
 
 import {
   buySchema,
@@ -74,6 +75,7 @@ export default function BuyModal({
     setValue,
     watch,
     register,
+    reset,
     formState: { errors },
   } = useForm<BuyFormValues>({
     resolver: zodResolver(buySchema) as unknown as Resolver<BuyFormValues>,
@@ -138,14 +140,19 @@ export default function BuyModal({
       spender,
     });
 
+try {
 
-
-
+toast.loading("Waiting for USDT approval...", {
+  id: "buy",
+});
 
     const txHash = await approveUSDT({
       spender,
       amount: totalUSDT,
     });
+    toast.success("USDT approved successfully.", {
+  id: "buy",
+});
 let nftAbi;
 
 
@@ -164,18 +171,38 @@ else if (data.asset === "YARD") {
 else {
   return;
 }
+toast.loading("Minting NFT...", {
+  id: "buy",
+});
 
 await mintNFT({
   abi: nftAbi,
   contractAddress: spender,
-  quantity: BigInt(data.quantity),
-  paymentMethod: CONTRACTS.USDT,
+  // mintNFT expects a number for quantity
+  quantity: Number(data.quantity),
 });
 
-    console.log(
-      "Approve transaction hash:",
-      txHash
-    );
+toast.success("NFT purchased successfully!", {
+  id: "buy",
+});
+
+// reset form
+reset();
+
+setOpen(false);
+
+  } catch (error) {
+
+  toast.error(
+    error instanceof Error
+      ? error.message
+      : "Transaction failed.",
+    {
+      id: "buy",
+    }
+  );
+
+}
 
 
   };
