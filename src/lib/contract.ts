@@ -13,16 +13,16 @@ export const contracts = {
 
   acre: {
     address: CONTRACTS.ACRE,
-   // abi: acreAbi,
+    abi: acreAbi,
   },
 
   plot: {
     address: CONTRACTS.PLOT,
-   // abi: plotAbi,
+    abi: plotAbi,
   },
 
   yard: {
     address: CONTRACTS.YARD,
-   // abi: yardAbi,
+    abi: yardAbi,
   },
 } as const;
