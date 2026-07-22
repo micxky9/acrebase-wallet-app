@@ -1,43 +1,48 @@
 "use client";
 
 import { useWriteContract } from "wagmi";
-import { waitForTransactionReceipt } from "wagmi/actions";
-import { config } from "@/lib/wagmi";
+
 
 export function useMintNFT() {
-  const { writeContractAsync, isPending } = useWriteContract();
 
-  async function mintNFT({
-    abi,
+  const {
+    writeContract,
+    isPending,
+    error,
+  } = useWriteContract();
+
+
+
+  function mintNFT({
     contractAddress,
+    abi,
     quantity,
-    paymentMethod,
   }: {
-    abi: readonly unknown[];
     contractAddress: `0x${string}`;
-    quantity: bigint;
-    paymentMethod: `0x${string}`;
+    abi: readonly unknown[];
+    quantity: number;
   }) {
-    const hash = await writeContractAsync({
-      abi,
+
+
+    writeContract({
       address: contractAddress,
+      abi,
       functionName: "mint",
       args: [
-        quantity,
-        "0x0000000000000000000000000000000000000000000000000000000000000000",
-        paymentMethod,
+        BigInt(quantity),
+        BigInt(0),
+        0,
       ],
     });
 
-    await waitForTransactionReceipt(config, {
-      hash,
-    });
-
-    return hash;
   }
+
+
 
   return {
     mintNFT,
     isPending,
+    error,
   };
+
 }
