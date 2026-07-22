@@ -178,7 +178,6 @@ toast.loading("Minting NFT...", {
 await mintNFT({
   abi: nftAbi,
   contractAddress: spender,
-  // mintNFT expects a number for quantity
   quantity: Number(data.quantity),
 });
 
