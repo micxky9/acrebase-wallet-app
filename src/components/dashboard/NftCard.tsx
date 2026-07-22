@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 type NftCardProps = {
   name: string;
   description: string;
-  balance: number;
+  balance: string;
   image: string;
 };
 
@@ -43,7 +43,7 @@ export default function NftCard({
       <div className="mt-6 flex items-center justify-between">
 
         <span className="text-sm text-gray-500">
-          Owned
+          Balance
         </span>
 
         <span className="text-2xl font-bold text-white">

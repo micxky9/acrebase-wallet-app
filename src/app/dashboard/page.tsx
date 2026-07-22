@@ -6,6 +6,7 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NftCollection from "@/components/dashboard/NftCollection"; 
 import BuyCard from "@/components/dashboard/BuyCard";
 
+
 export default function DashboardPage() {
   return (
     <ProtectedRoute>

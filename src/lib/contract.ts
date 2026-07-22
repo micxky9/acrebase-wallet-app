@@ -1,31 +1,28 @@
 import { CONTRACTS } from "@/constants/contracts";
 
 import { usdtAbi } from "@/abi/usdt";
-import { acreAbi } from "@/abi/acre";
-import { plotAbi } from "@/abi/plot";
-import { yardAbi } from "@/abi/yard";
-
+// import { acreAbi } from "@/abi/acre";
+// import { plotAbi } from "@/abi/plot";
+// import { yardAbi } from "@/abi/yard";
 
 export const contracts = {
-
-  usdt:{
+  usdt: {
     address: CONTRACTS.USDT,
     abi: usdtAbi,
   },
 
-  acre:{
+  acre: {
     address: CONTRACTS.ACRE,
-    abi: acreAbi,
+   // abi: acreAbi,
   },
 
-  plot:{
+  plot: {
     address: CONTRACTS.PLOT,
-    abi: plotAbi,
+   // abi: plotAbi,
   },
 
-  yard:{
+  yard: {
     address: CONTRACTS.YARD,
-    abi: yardAbi,
+   // abi: yardAbi,
   },
-
 } as const;

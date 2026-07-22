@@ -1,6 +1,12 @@
+"use client";
+
 import NftCard from "./NftCard";
 
+import { useTokenBalances } from "@/hooks/useTokenBalances";
+
 export default function NftCollection() {
+  const { balances, isLoading } = useTokenBalances();
+
   return (
     <section className="space-y-5">
 
@@ -14,26 +20,49 @@ export default function NftCollection() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+        <NftCard
+          name="USDT"
+          description="Payment Token"
+          balance={
+            isLoading
+              ? "Loading..."
+               : balances.usdt.toString()
+          }
+          image="/tokens/usdt.png"
+        />
 
         <NftCard
           name="ACRE"
           description="Digital Land Asset"
-          balance={0}
+          balance={
+            isLoading
+              ? "Loading..."
+              : balances.acre.toString()
+          }
           image="/tokens/acre.png"
         />
 
         <NftCard
           name="PLOT"
           description="Virtual Plot NFT"
-          balance={0}
+          balance={
+            isLoading
+              ? "Loading..."
+              : balances.plot.toString()
+          }
           image="/tokens/plot.png"
         />
 
         <NftCard
           name="YARD"
           description="Premium Yard NFT"
-          balance={0}
+          balance={
+            isLoading
+              ? "Loading..."
+              : balances.yard.toString()
+          }
           image="/tokens/yard.png"
         />
 
