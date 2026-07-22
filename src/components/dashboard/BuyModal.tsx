@@ -279,7 +279,7 @@ setOpen(false);
 
 
 
-              <SelectContent>
+              <SelectContent className="absolute top-30 left-[-185]">
 
 
                 <SelectItem value="ACRE">
