@@ -10,6 +10,10 @@ import { useMintNFT } from "@/hooks/useMintNFT";
 import { CONTRACTS } from "@/constants/contracts";
 import { NFTPrices } from "@/constants/nftPrices";
 
+import { acreAbi } from "@/abi/acre";
+import { plotAbi } from "@/abi/plot";
+import { yardAbi } from "@/abi/yard";
+
 import {
   buySchema,
   BuyFormValues,
@@ -142,8 +146,31 @@ export default function BuyModal({
       spender,
       amount: totalUSDT,
     });
+let nftAbi;
 
 
+if (data.asset === "ACRE") {
+  nftAbi = acreAbi;
+}
+
+else if (data.asset === "PLOT") {
+  nftAbi = plotAbi;
+}
+
+else if (data.asset === "YARD") {
+  nftAbi = yardAbi;
+}
+
+else {
+  return;
+}
+
+await mintNFT({
+  abi: nftAbi,
+  contractAddress: spender,
+  quantity: BigInt(data.quantity),
+  paymentMethod: CONTRACTS.USDT,
+});
 
     console.log(
       "Approve transaction hash:",
@@ -314,7 +341,7 @@ export default function BuyModal({
 
             {
               isPending
-                ? "Confirm in Wallet..."
+                ? "Approving Transaction..."
                 : isConfirming
                 ? "Confirming..."
                 : "Buy NFT"
