@@ -36,11 +36,6 @@ export function useTokenBalances() {
       enabled: Boolean(address),
     },
   });
-console.log("Address:", address);
-console.log("Data:", data);
-console.log("Error:", error);
-  console.log("Raw contract response:", data);
-  console.log("Read error:", error);
 
   return {
     balances: {

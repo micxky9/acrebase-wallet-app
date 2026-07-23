@@ -40,7 +40,7 @@ export default function NftCollection() {
          balance={
   isLoading
     ? "Loading..."
-    : formatToken(typeof balances.acre === "bigint" ? balances.acre : 0n, 18, "ACRE")
+    : formatToken(typeof balances.acre === "bigint" ? balances.acre : 0n, 0, "ACRE")
 }
           image="/tokens/acre.png"
         />
@@ -51,7 +51,7 @@ export default function NftCollection() {
            balance={
     isLoading
       ? "Loading..."
-      : formatToken(typeof balances.plot === "bigint" ? balances.plot : 0n, 18, "PLOT")
+      : formatToken(typeof balances.plot === "bigint" ? balances.plot : 0n, 0, "PLOT")
   }
             image="/tokens/plot.png"
           />
@@ -62,7 +62,7 @@ export default function NftCollection() {
          balance={
   isLoading
     ? "Loading..."
-    : formatToken(typeof balances.yard === "bigint" ? balances.yard : 0n, 18, "YARD")
+    : formatToken(typeof balances.yard === "bigint" ? balances.yard : 0n, 0, "YARD")
 }
           image="/tokens/yard.png"
         />

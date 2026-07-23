@@ -122,7 +122,6 @@ const { batch } =
       startIndex: batch[4],
     }
   : null;
-console.log(batch);
 
 
 
@@ -179,7 +178,9 @@ toast.loading("Waiting for USDT approval...", {
   spender,
   amount: totalUSDT,
 });
-
+toast.success("USDT approved.", {
+  id: "buy",
+});
 toast.loading("USDT approved. Waiting for wallet confirmation...", {
   id: "buy",
 });
@@ -212,7 +213,6 @@ const mintHash = await mintNFT({
 });
 
 
-console.log("Mint Transaction:", mintHash);
 
 toast.loading("Updating balances...", {
   id: "buy",
