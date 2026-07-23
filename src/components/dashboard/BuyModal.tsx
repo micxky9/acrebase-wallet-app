@@ -183,20 +183,27 @@ reset();
 setOpen(false);
 
   } catch (error) {
-
-  toast.error(
-    error instanceof Error
-      ? error.message
-      : "Transaction failed.",
-    {
-      id: "buy",
-    }
-  );
+    toast.error(`Transaction failed - ${error.message.slice(0,34)}`, {
+      id: 'buy'
+    })
+  // toast.error(
+  //   error instanceof Error
+  //     ? error.message
+  //     : "Transaction failed.",
+  //   {
+  //     id: "buy",
+  //   }
+  // );
 
 }
 
 
   };
+
+
+
+
+
 
 
   return (
