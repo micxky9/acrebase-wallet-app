@@ -8,7 +8,9 @@ import { useApproveUSDT } from "@/hooks/useApproveUSDT";
 import { useMintNFT } from "@/hooks/useMintNFT";
 
 import { CONTRACTS } from "@/constants/contracts";
-import { NFTPrices } from "@/constants/nftPrices";
+import { useCurrentBatch } from "@/hooks/useCurrentBatch";
+import { useTokenBalances } from "@/hooks/useTokenBalances";
+
 
 import { acreAbi } from "@/abi/acre";
 import { plotAbi } from "@/abi/plot";
@@ -50,7 +52,7 @@ export default function BuyModal({
   setOpen,
 }: Props) {
 
-
+const { refetch } = useTokenBalances();
   const {
     approveUSDT,
     isPending,
@@ -64,6 +66,9 @@ export default function BuyModal({
     mintNFT,
     isPending: mintPending,
   } = useMintNFT();
+
+
+
 
 
 
@@ -83,6 +88,41 @@ export default function BuyModal({
     },
   });
 
+const selectedAsset = watch("asset");
+
+const selectedContract =
+  selectedAsset === "ACRE"
+    ? CONTRACTS.ACRE
+    : selectedAsset === "PLOT"
+    ? CONTRACTS.PLOT
+    : selectedAsset === "YARD"
+    ? CONTRACTS.YARD
+    : undefined;
+
+const selectedAbi =
+  selectedAsset === "ACRE"
+    ? acreAbi
+    : selectedAsset === "PLOT"
+    ? plotAbi
+    : selectedAsset === "YARD"
+    ? yardAbi
+    : undefined;
+
+const { batch } =
+  useCurrentBatch(
+    selectedContract as `0x${string}`,
+    selectedAbi ?? []
+  );
+  const currentBatch = batch
+  ? {
+      quantity: batch[0],
+      price: batch[1],
+      active: batch[2],
+      batchId: batch[3],
+      startIndex: batch[4],
+    }
+  : null;
+console.log(batch);
 
 
 
@@ -116,18 +156,15 @@ export default function BuyModal({
 
 
 
-    const price =
-      NFTPrices[
-        data.asset as keyof typeof NFTPrices
-      ];
+    if (!batch) {
+  toast.error("Unable to fetch NFT price.");
+  return;
+}
 
+const price = batch[1];
 
-
-    const totalUSDT =
-      BigInt(price * data.quantity) *
-      BigInt(10 ** 18);
-
-
+const totalUSDT =
+  price * BigInt(data.quantity);
 
 
 
@@ -138,13 +175,14 @@ toast.loading("Waiting for USDT approval...", {
   id: "buy",
 });
 
-    const txHash = await approveUSDT({
-      spender,
-      amount: totalUSDT,
-    });
-   toast.loading("Approved,!Waiting for purchase....", {
-        id: "buy",
-      });
+    await approveUSDT({
+  spender,
+  amount: totalUSDT,
+});
+
+toast.loading("USDT approved. Waiting for wallet confirmation...", {
+  id: "buy",
+});
 let nftAbi;
 
 
@@ -163,27 +201,36 @@ else if (data.asset === "YARD") {
 else {
   return;
 }
-toast.loading("Minting NFT...", {
+toast.loading("Please confirm the mint transaction in your wallet...", {
   id: "buy",
 });
 
-await mintNFT({
+const mintHash = await mintNFT({
   abi: nftAbi,
   contractAddress: spender,
-  quantity: Number(data.quantity),
+  quantity: BigInt(data.quantity),
 });
+
+
+console.log("Mint Transaction:", mintHash);
+
+toast.loading("Updating balances...", {
+  id: "buy",
+});
+
+await refetch();
 
 toast.success("NFT purchased successfully!", {
   id: "buy",
 });
 
-// reset form
 reset();
-
 setOpen(false);
 
+
+
   } catch (error) {
-    toast.error(`Transaction failed - ${error.message.slice(0,34)}`, {
+    toast.error("Transaction failed!", {
       id: 'buy'
     })
   // toast.error(
@@ -294,7 +341,11 @@ setOpen(false);
 
 
           <div>
-
+{batch && (
+  <p className="text-sm text-gray-400">
+Price per NFT: {Number(batch[1]) / 1e18} USDT
+  </p>
+)}
             <Input
 
               type="number"
@@ -340,15 +391,15 @@ setOpen(false);
             className="w-full rounded-xl bg-violet-600"
 
           >
-
-            {
-              isPending
-                ? "Approving Transaction..."
-                : isConfirming
-                ? "Confirming..."
-                : "Buy NFT"
-            }
-
+{
+  isPending
+    ? "Approving..."
+    : isConfirming
+    ? "Waiting..."
+    : mintPending
+    ? "Minting..."
+    : "Buy NFT"
+}
 
           </Button>
 
