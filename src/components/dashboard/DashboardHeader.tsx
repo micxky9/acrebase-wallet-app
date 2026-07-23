@@ -25,7 +25,7 @@ const router = useRouter();
 
 useEffect(() => {
   if(!address){
-    router.replace("/");
+    router.replace("");
   }
 }, [address, router]);
 
