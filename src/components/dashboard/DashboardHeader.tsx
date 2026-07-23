@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,11 +23,14 @@ export default function DashboardHeader() {
 
 const router = useRouter();
 
-useEffect(() => {
-  if(!address){
-    router.replace("");
-  }
-}, [address, router]);
+// useEffect(() => {
+//   if(!address){
+//     router.replace("");
+//   }
+// }, [address, router]);
+
+
+
 
 
   return (
@@ -66,7 +69,10 @@ useEffect(() => {
 
           <Button
             variant="destructive"
-            onClick={() => disconnect()}
+            onClick={async () => {
+              disconnect();
+              router.replace("/");
+            }}
             className="
               rounded-full
               border
