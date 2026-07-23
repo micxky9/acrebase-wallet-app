@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useWallet } from "@/hooks/usewallet";
-import { toast } from "sonner"
+
 export default function WalletButton() {
   const { account, connect } = useWallet();
 
@@ -12,9 +12,7 @@ export default function WalletButton() {
       connect.connectors[0];
 
     if (!connector) {
-      toast.error("No wallet connector found.", {
-        id: "buy",
-      });
+      console.error("No wallet connector found.");
       return;
     }
 
@@ -25,29 +23,26 @@ export default function WalletButton() {
 
   return (
     <Button
-      type="button"
       onClick={handleConnect}
       disabled={account.isConnected || connect.isPending}
       className="
-        h-14 w-full
-        rounded-2xl
+        h-14 w-full 
+        rounded-2xl 
         border-0
-        bg-lineart-to-r
-        from-violet-600
-        via-violet-500
+        bg-linear-to-r 
+        from-violet-600 
+        via-violet-500 
         to-purple-500
-        text-base
-        font-semibold
+        text-base 
+        font-semibold 
         text-white
         shadow-[0_0_40px_rgba(139,92,246,0.35)]
-        transition-all
+        transition-all 
         duration-300
         hover:from-violet-500
         hover:to-purple-400
         hover:scale-[1.03]
         active:scale-[0.98]
-        disabled:cursor-not-allowed
-        disabled:opacity-70
       "
     >
       <div className="flex items-center justify-center gap-2">
