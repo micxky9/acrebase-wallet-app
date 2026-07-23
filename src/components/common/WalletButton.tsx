@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useWallet } from "@/hooks/usewallet";
-
+import { toast } from "sonner"
 export default function WalletButton() {
   const { account, connect } = useWallet();
 
@@ -12,7 +12,9 @@ export default function WalletButton() {
       connect.connectors[0];
 
     if (!connector) {
-      console.error("No wallet connector found.");
+      toast.error("No wallet connector found.", {
+        id: "buy",
+      });
       return;
     }
 
@@ -30,7 +32,7 @@ export default function WalletButton() {
         h-14 w-full
         rounded-2xl
         border-0
-        bg-gradient-to-r
+        bg-lineart-to-r
         from-violet-600
         via-violet-500
         to-purple-500

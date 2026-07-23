@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 
 export default function DashboardHeader() {
   const { address, chain } = useAccount();
   const { disconnect } = useDisconnect();
 
-  // Initialize mounted based on whether we're running on the client
   const [mounted] = useState<boolean>(() => typeof window !== "undefined");
 
   const shortenAddress = (address?: string) => {
@@ -18,6 +20,15 @@ export default function DashboardHeader() {
 
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
+
+const router = useRouter();
+
+useEffect(() => {
+  if(!address){
+    router.replace("/");
+  }
+}, [address, router]);
+
 
   return (
     <header className="rounded-3xl border border-white/10 bg-[#151125]/65 p-8 backdrop-blur-3xl">

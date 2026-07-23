@@ -4,7 +4,8 @@ import { useWallet } from "@/hooks/usewallet";
 import { Button } from "@/components/ui/button";
 import { baseSepolia } from "wagmi/chains";
 
-export default function ProtectedRoute({
+export default function ProtectedRoute(
+  {
   children,
 }: {
   children: React.ReactNode;

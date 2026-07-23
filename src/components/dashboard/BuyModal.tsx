@@ -53,11 +53,9 @@ export default function BuyModal({
 
   const {
     approveUSDT,
-    hash,
     isPending,
     isConfirming,
-    isSuccess: approvalSuccess,
-    error: approvalError,
+   
   } = useApproveUSDT();
 
 
@@ -133,12 +131,6 @@ export default function BuyModal({
 
 
 
-    console.log({
-      nft: data.asset,
-      quantity: data.quantity,
-      totalUSDT,
-      spender,
-    });
 
 try {
 
@@ -150,9 +142,9 @@ toast.loading("Waiting for USDT approval...", {
       spender,
       amount: totalUSDT,
     });
-    toast.success("USDT approved successfully.", {
-  id: "buy",
-});
+   toast.loading("Approved,!Waiting for purchase....", {
+        id: "buy",
+      });
 let nftAbi;
 
 
@@ -205,29 +197,6 @@ setOpen(false);
 
 
   };
-
-
-
-
-  console.log(
-    "Approval hash:",
-    hash
-  );
-
-
-  console.log(
-    "Approval success:",
-    approvalSuccess
-  );
-
-
-  console.log(
-    "Approval error:",
-    approvalError
-  );
-
-
-
 
 
   return (
