@@ -5,7 +5,6 @@ import ProtectedRoute from "@/components/common/ProtectedRoute";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import NftCollection from "@/components/dashboard/NftCollection"; 
 import BuyCard from "@/components/dashboard/BuyCard";
-import TransferModal from "@/components/dashboard/TransferModal";
 
 export default function DashboardPage() {
  

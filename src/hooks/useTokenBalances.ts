@@ -1,12 +1,14 @@
 "use client";
 
-import { useAccount, useReadContracts } from "wagmi";
+import {
+  useAccount,
+  useReadContracts,
+} from "wagmi";
 import { contracts } from "@/lib/contract";
 
 export function useTokenBalances() {
   
   const { address, } = useAccount();
-
 
 
   const { data, isLoading, error, refetch } = useReadContracts({
@@ -32,9 +34,9 @@ export function useTokenBalances() {
         args: address ? [address] : undefined,
       },
     ],
-    query: {
-      enabled: Boolean(address),
-    },
+query: {
+  enabled: !!address,
+},
   });
 
   return {

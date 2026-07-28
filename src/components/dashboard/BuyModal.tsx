@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import type { Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,8 +52,8 @@ export default function BuyModal({
   open,
   setOpen,
 }: Props) {
+  const { refetch } = useTokenBalances();
 
-const { refetch } = useTokenBalances();
   const {
     approveUSDT,
     isPending,
@@ -62,12 +63,11 @@ const { refetch } = useTokenBalances();
 
 
 
-  const {
-    mintNFT,
-    isPending: mintPending,
-  } = useMintNFT();
-
-
+const {
+  mintNFT,
+  isPending: mintPending,
+  isSuccess,
+} = useMintNFT();
 
 
 
@@ -122,7 +122,16 @@ const { batch } =
       startIndex: batch[4],
     }
   : null;
+useEffect(() => {
+  if (!isSuccess) return;
 
+  refetch();
+
+  toast.success("Balances updated.", {
+    id: "refresh",
+  });
+
+}, [isSuccess, refetch]);
 
 
   const onSubmit = async (
@@ -214,11 +223,7 @@ const mintHash = await mintNFT({
 
 
 
-toast.loading("Updating balances...", {
-  id: "buy",
-});
 
-await refetch();
 
 toast.success("NFT purchased successfully!", {
   id: "buy",
@@ -233,14 +238,6 @@ setOpen(false);
     toast.error("Transaction failed!", {
       id: 'buy'
     })
-  // toast.error(
-  //   error instanceof Error
-  //     ? error.message
-  //     : "Transaction failed.",
-  //   {
-  //     id: "buy",
-  //   }
-  // );
 
 }
 

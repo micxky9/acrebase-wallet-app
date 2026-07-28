@@ -24,7 +24,8 @@ const [sendOpen, setSendOpen] = useState(false);
   onClick={() => setBuyOpen(true)}
   className="
     h-12
-    rounded-xl
+    rounded-1
+    mt-4
     bg-linear-to-r
     from-violet-600
     to-purple-500
@@ -40,7 +41,8 @@ const [sendOpen, setSendOpen] = useState(false);
   onClick={() => setSendOpen(true)}
   className="
     h-12
-    rounded-xl
+    ml-5
+    rounded-1
     bg-linear-to-r
     from-violet-600
     to-purple-500
