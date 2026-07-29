@@ -23,11 +23,6 @@ export default function DashboardHeader() {
 
 const router = useRouter();
 
-// useEffect(() => {
-//   if(!address){
-//     router.replace("");
-//   }
-// }, [address, router]);
 
 
 
