@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 
 import { useVerifiedNFTs } from "@/hooks/useVerifiedNFTs";
 import { useTransferNFT } from "@/hooks/useTransferNFT";
+import { useTokenBalances } from "@/hooks/useTokenBalances";
 
 import { CONTRACTS } from "@/constants/contracts";
 
@@ -54,8 +55,8 @@ export default function TransferModal({
 }: Props) {
   const { address } = useAccount();
 
-const { verifiedNFTs } =
-  useVerifiedNFTs();
+const { verifiedNFTs } = useVerifiedNFTs();
+const { refetch } = useTokenBalances();
 
 const {
   transferNFT,
@@ -115,21 +116,7 @@ const ownedNFTs = verifiedNFTs.filter(
     nft.nftAddress.toLowerCase() ===
     contractAddress.toLowerCase()
 );
-console.log("All verified NFTs:", verifiedNFTs);
-
-console.log(
-  "Selected collection:",
-  values.collection
-);
-console.log(
-  "Owned NFTs for collection:",
-  ownedNFTs
-);
-
-console.log(
-  "Owned count:",
-  ownedNFTs.length
-);
+;
 if (
   values.quantity >
   ownedNFTs.length
@@ -162,22 +149,22 @@ const tokenIds = ownedNFTs
     );
 
     await transferNFT({
-      contractAddress,
-      abi,
-      from: address,
-      to: values.recipient as `0x${string}`,
-      tokenIds,
-    });
+  contractAddress,
+  abi,
+  from: address,
+  to: values.recipient as `0x${string}`,
+  tokenIds,
+});
+await refetch();
 
-    toast.success(
-      "NFT transferred successfully!",
-      {
-        id: "transfer",
-      }
-    );
+toast.success(
+  "NFT transferred successfully!",
+  {
+    id: "transfer",
+  }
+);
 
-    setOpen(false);
-
+setOpen(false);
   } catch {
 
     toast.error(
