@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 
@@ -38,10 +39,11 @@ const schema = z.object({
     "YARD",
   ]),
 
-  quantity: z
-    .number()
-    .min(1, "Minimum is 1"),
+  tokenIds: z
+    .array(z.string())
+    .min(1, "Select at least one NFT"),
 });
+
 type FormValues = z.infer<typeof schema>;
 
 type Props = {
@@ -53,15 +55,17 @@ export default function TransferModal({
   open,
   setOpen,
 }: Props) {
+
   const { address } = useAccount();
 
-const { verifiedNFTs } = useVerifiedNFTs();
-const { refetch } = useTokenBalances();
+  const { verifiedNFTs } = useVerifiedNFTs();
 
-const {
-  transferNFT,
-  isPending,
-} = useTransferNFT();
+  const { refetch } = useTokenBalances();
+
+  const {
+    transferNFT,
+    isPending,
+  } = useTransferNFT();
 
   const {
     register,
@@ -71,29 +75,20 @@ const {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-   defaultValues: {
-    recipient: "",
-    collection: "ACRE",
-    quantity: 1,
+ defaultValues: {
+  recipient: "",
+  collection: undefined,
+  tokenIds: [],
 },
   });
 
   const selectedCollection = watch("collection");
-
-const onSubmit = async (
-  values: FormValues
-) => {
-
-  if (!address) {
-    toast.error("Wallet not connected.");
-    return;
-  }
+  const selectedTokenIds = watch("tokenIds");
 
   let contractAddress: `0x${string}`;
   let abi: readonly unknown[];
 
-  switch (values.collection) {
-
+  switch (selectedCollection) {
     case "ACRE":
       contractAddress = CONTRACTS.ACRE;
       abi = acreAbi;
@@ -108,87 +103,111 @@ const onSubmit = async (
       contractAddress = CONTRACTS.YARD;
       abi = yardAbi;
       break;
-
   }
 
-const ownedNFTs = verifiedNFTs.filter(
-  nft =>
-    nft.nftAddress.toLowerCase() ===
-    contractAddress.toLowerCase()
-);
-;
-if (
-  values.quantity >
-  ownedNFTs.length
-) {
-  toast.error(
-    `You only own ${ownedNFTs.length} ${values.collection} NFT(s).`
-  );
-  return;
+function getCollectionIcon(collection: string) {
+  switch (collection) {
+    case "ACRE":
+      return "/tokens/acre.png";
+
+    case "PLOT":
+      return "/tokens/plot.png";
+
+    case "YARD":
+      return "/tokens/yard.png";
+
+    default:
+      return "/tokens/acre.png";
+  }
 }
-const tokenIds = ownedNFTs
-  .slice(0, values.quantity)
-  .map(
-    nft => BigInt(nft.tokenId)
-  );
 
-  if (tokenIds.length === 0) {
-    toast.error(
-      `You don't own any ${values.collection} NFTs.`
-    );
-    return;
-  }
+const collectionNFTs =
+  selectedCollection
+    ? verifiedNFTs.filter(
+        nft =>
+          nft.nftAddress.toLowerCase() ===
+          (
+            selectedCollection === "ACRE"
+              ? CONTRACTS.ACRE
+              : selectedCollection === "PLOT"
+              ? CONTRACTS.PLOT
+              : CONTRACTS.YARD
+          ).toLowerCase()
+      )
+    : [];
+  const onSubmit = async (
+    values: FormValues
+  ) => {
 
-  try {
+    if (!address) {
+      toast.error("Wallet not connected.");
+      return;
+    }
 
-    toast.loading(
-      "Sending NFT...",
-      {
+    try {
+
+      toast.loading("Sending NFT...", {
         id: "transfer",
-      }
-    );
+      });
 
-    await transferNFT({
-  contractAddress,
-  abi,
-  from: address,
-  to: values.recipient as `0x${string}`,
-  tokenIds,
-});
-await refetch();
+      await transferNFT({
+        contractAddress,
+        abi,
+        from: address,
+        to: values.recipient as `0x${string}`,
+        tokenIds: values.tokenIds.map(
+          (id) => BigInt(id)
+        ),
+      });
 
-toast.success(
-  "NFT transferred successfully!",
-  {
-    id: "transfer",
-  }
-);
+      await refetch();
 
-setOpen(false);
-  } catch {
+      toast.success(
+        "NFT transferred successfully!",
+        {
+          id: "transfer",
+        }
+      );
 
-    toast.error(
-      "Transfer failed.",
-      {
-        id: "transfer",
-      }
-    );
+      setOpen(false);
 
-  }
+    } catch {
 
-};
+      toast.error(
+        "Transfer failed.",
+        {
+          id: "transfer",
+        }
+      );
+
+    }
+
+  };
 
   return (
+
     <Dialog
       open={open}
       onOpenChange={setOpen}
     >
-      <DialogContent className="rounded-3xl border-white/10 bg-[#151125] text-white">
+
+      <DialogContent
+  className="
+    max-w-xl
+    rounded-3xl
+    border
+    border-white/10
+    bg-[#151125]
+    text-white
+  "
+>
 
         <DialogHeader>
+
           <DialogTitle>
             Transfer NFT
           </DialogTitle>
+
         </DialogHeader>
 
         <form
@@ -207,96 +226,192 @@ setOpen(false);
             </p>
           )}
 
-          <div className="space-y-3">
+          <div className="space-y-4">
 
-            <p className="text-sm font-medium text-gray-300">
-              Select NFT Collection
-            </p>
+  <p className="text-sm font-medium text-gray-300">
+    Select NFT Collection
+  </p>
 
-            <div className="grid grid-cols-3 gap-3">
+  <div className="grid grid-cols-3 gap-3">
 
-              <Button
-  type="button"
-  variant="outline"
-  onClick={() => {
-    setValue("collection", "ACRE");
-  }}
-  className={`h-12 rounded-xl border transition-all duration-200 ${
-    watch("collection") === "ACRE"
-      ? "border-violet-500 bg-violet-500/15 text-violet-300"
-      : "border-white/20 bg-transparent text-white hover:border-violet-400"
-  }`}
->
-  ACRE
-</Button>
+    <Button
+      type="button"
+      variant="outline"
+      onClick={() => {
+        setValue("collection", "ACRE");
+        setValue("tokenIds", []);
+      }}
+      className={`h-12 rounded-xl border transition-all duration-200 ${
+        watch("collection") === "ACRE"
+          ? "border-violet-500 bg-violet-500/15 text-violet-300"
+          : "border-white/20 bg-transparent text-white hover:border-violet-400"
+      }`}
+    >
+      ACRE
+    </Button>
 
-           <Button
-  type="button"
-  variant="outline"
-  onClick={() => {
-    setValue("collection", "PLOT");
-  }}
-  className={`h-12 rounded-xl border transition-all duration-200 ${
-    watch("collection") === "PLOT"
-      ? "border-violet-500 bg-violet-500/15 text-violet-300"
-      : "border-white/20 bg-transparent text-white hover:border-violet-400"
-  }`}
->
-  PLOT
-</Button>
+    <Button
+      type="button"
+      variant="outline"
+      onClick={() => {
+        setValue("collection", "PLOT");
+        setValue("tokenIds", []);
+      }}
+      className={`h-12 rounded-xl border transition-all duration-200 ${
+        watch("collection") === "PLOT"
+          ? "border-violet-500 bg-violet-500/15 text-violet-300"
+          : "border-white/20 bg-transparent text-white hover:border-violet-400"
+      }`}
+    >
+      PLOT
+    </Button>
 
-            <Button
-  type="button"
-  variant="outline"
-  onClick={() => {
-    setValue("collection", "YARD");
-  }}
-  className={`h-12 rounded-xl border transition-all duration-200 ${
-    watch("collection") === "YARD"
-      ? "border-violet-500 bg-violet-500/15 text-violet-300"
-      : "border-white/20 bg-transparent text-white hover:border-violet-400"
-  }`}
->
-  YARD
-</Button>
+    <Button
+      type="button"
+      variant="outline"
+      onClick={() => {
+        setValue("collection", "YARD");
+        setValue("tokenIds", []);
+      }}
+      className={`h-12 rounded-xl border transition-all duration-200 ${
+        watch("collection") === "YARD"
+          ? "border-violet-500 bg-violet-500/15 text-violet-300"
+          : "border-white/20 bg-transparent text-white hover:border-violet-400"
+      }`}
+    >
+      YARD
+    </Button>
+
+  </div>
+
+  {selectedCollection && (
+
+    <div
+      className="
+        max-h-72
+        overflow-y-auto
+        space-y-3
+        rounded-xl
+        border
+        border-white/10
+        p-3
+        pr-2
+      "
+    >
+
+      {collectionNFTs.length === 0 ? (
+
+        <p className="text-sm text-gray-400">
+          You don't own any {selectedCollection} NFTs.
+        </p>
+
+      ) : (
+
+        collectionNFTs.map((nft) => (
+
+          <label
+            key={nft.tokenId}
+            className={`
+              flex
+              items-center
+              justify-between
+              rounded-2xl
+              border
+              p-4
+              cursor-pointer
+              transition-all
+              duration-200
+              ${
+                selectedTokenIds.includes(nft.tokenId)
+                  ? "border-violet-500 bg-violet-500/10"
+                  : "border-white/10 bg-[#1a1530] hover:border-violet-500"
+              }
+            `}
+          >
+
+            <div className="flex items-center gap-4">
+
+              <Image
+                src={getCollectionIcon(selectedCollection)}
+                alt={selectedCollection}
+                width={52}
+                height={52}
+                className="rounded-full"
+              />
+
+              <div>
+
+                <p className="font-semibold text-white">
+                  {selectedCollection} NFT
+                </p>
+
+                <p className="text-sm text-gray-400">
+                  Token #{nft.tokenId}
+                </p>
+
+              </div>
 
             </div>
 
-          </div>
-          <div className="space-y-2">
+            <input
+              type="checkbox"
+              checked={selectedTokenIds.includes(nft.tokenId)}
+              onChange={(e) => {
 
-  <p className="text-sm font-medium text-gray-300">
-    Quantity
-  </p>
+                if (e.target.checked) {
 
-  <Input
-    type="number"
-    min={1}
-    {...register("quantity", {
-      valueAsNumber: true,
-    })}
-  />
+                  setValue("tokenIds", [
+                    ...selectedTokenIds,
+                    nft.tokenId,
+                  ]);
 
-  {errors.quantity && (
+                } else {
+
+                  setValue(
+                    "tokenIds",
+                    selectedTokenIds.filter(
+                      (id) => id !== nft.tokenId
+                    )
+                  );
+
+                }
+
+              }}
+            />
+
+          </label>
+
+        ))
+
+      )}
+
+    </div>
+
+  )}
+
+  {errors.tokenIds && (
     <p className="text-sm text-red-500">
-      {errors.quantity.message}
+      {errors.tokenIds.message}
     </p>
   )}
 
 </div>
           <Button
-  type="submit"
-  disabled={isPending}
-  className="w-full rounded-xl bg-violet-600 hover:bg-violet-900 hover:translate-y-[-px]"
->
-  {isPending
-    ? "Sending..."
-    : "Send NFT"}
-</Button>
+            type="submit"
+            disabled={isPending}
+            className="w-full rounded-xl bg-violet-600 hover:bg-violet-900"
+          >
+            {isPending
+              ? "Sending..."
+              : "Send NFT"}
+          </Button>
 
         </form>
 
       </DialogContent>
+
     </Dialog>
+
   );
+
 }

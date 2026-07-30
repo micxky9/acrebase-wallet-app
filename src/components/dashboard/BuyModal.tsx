@@ -113,15 +113,16 @@ const { batch } =
     selectedContract as `0x${string}`,
     selectedAbi ?? []
   );
+
   const currentBatch = batch
-  ? {
-      quantity: batch[0],
-      price: batch[1],
-      active: batch[2],
-      batchId: batch[3],
-      startIndex: batch[4],
-    }
-  : null;
+    ? {
+        quantity: batch.quantity,
+        price: batch.price,
+        active: batch.active,
+        batchId: batch.batch,
+        startIndex: batch.startIndex,
+      }
+    : null;
 useEffect(() => {
   if (!isSuccess) return;
 
@@ -164,12 +165,12 @@ useEffect(() => {
 
 
 
-    if (!batch) {
+    if (!currentBatch) {
   toast.error("Unable to fetch NFT price.");
   return;
 }
 
-const price = batch[1];
+const price = currentBatch.price;
 
 const totalUSDT =
   price * BigInt(data.quantity);
@@ -338,9 +339,9 @@ setOpen(false);
 
 
           <div>
-{batch && (
+{currentBatch && (
   <p className="text-sm text-gray-400">
-Price per NFT: {Number(batch[1]) / 1e18} USDT
+    Price per NFT: {Number(currentBatch.price) / 1e18} USDT
   </p>
 )}
             <Input
