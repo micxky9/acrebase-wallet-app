@@ -17,6 +17,7 @@ import { yardAbi } from "@/abi/yard";
 import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { launchConfetti } from "@/lib/confetti";
 
 import {
   Dialog,
@@ -168,7 +169,7 @@ const collectionNFTs =
           id: "transfer",
         }
       );
-
+launchConfetti();
       setOpen(false);
 
     } catch {

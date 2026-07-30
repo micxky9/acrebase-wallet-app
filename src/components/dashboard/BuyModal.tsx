@@ -11,6 +11,8 @@ import { useMintNFT } from "@/hooks/useMintNFT";
 import { CONTRACTS } from "@/constants/contracts";
 import { useCurrentBatch } from "@/hooks/useCurrentBatch";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
+import { formatToken } from "@/lib/format";
+import { launchConfetti } from "@/lib/confetti";
 
 
 import { acreAbi } from "@/abi/acre";
@@ -52,7 +54,7 @@ export default function BuyModal({
   open,
   setOpen,
 }: Props) {
-  const { refetch } = useTokenBalances();
+const { balances, refetch } = useTokenBalances();
 
   const {
     approveUSDT,
@@ -113,16 +115,15 @@ const { batch } =
     selectedContract as `0x${string}`,
     selectedAbi ?? []
   );
-
   const currentBatch = batch
-    ? {
-        quantity: batch.quantity,
-        price: batch.price,
-        active: batch.active,
-        batchId: batch.batch,
-        startIndex: batch.startIndex,
-      }
-    : null;
+  ? {
+      quantity: batch[0],
+      price: batch[1],
+      active: batch[2],
+      batchId: batch[3],
+      startIndex: batch[4],
+    }
+  : null;
 useEffect(() => {
   if (!isSuccess) return;
 
@@ -165,17 +166,27 @@ useEffect(() => {
 
 
 
-    if (!currentBatch) {
+   if (!batch) {
   toast.error("Unable to fetch NFT price.");
   return;
 }
 
-const price = currentBatch.price;
+const price = batch[1];
 
 const totalUSDT =
   price * BigInt(data.quantity);
 
+if (balances.usdt < totalUSDT) {
+  toast.error(
+    `Insufficient USDT balance. You need ${formatToken(
+      totalUSDT - balances.usdt,
+      18,
+      "USDT"
+    )} more.`
+  );
 
+  return;
+}
 
 
 try {
@@ -229,6 +240,7 @@ const mintHash = await mintNFT({
 toast.success("NFT purchased successfully!", {
   id: "buy",
 });
+launchConfetti();
 
 reset();
 setOpen(false);
@@ -339,9 +351,9 @@ setOpen(false);
 
 
           <div>
-{currentBatch && (
+{batch && (
   <p className="text-sm text-gray-400">
-    Price per NFT: {Number(currentBatch.price) / 1e18} USDT
+Price per NFT: {Number(batch[1]) / 1e18} USDT
   </p>
 )}
             <Input

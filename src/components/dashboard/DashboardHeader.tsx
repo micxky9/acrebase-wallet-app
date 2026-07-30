@@ -3,13 +3,19 @@
 import { useState } from "react";
 import { useAccount, useDisconnect } from "wagmi";
 import { useRouter } from "next/navigation";
-// import { useEffect } from "react";
-
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 
 export default function DashboardHeader() {
+  const copyAddress = async () => {
+  if (!address) return;
+
+  await navigator.clipboard.writeText(address);
+
+  toast.success("Wallet address copied");
+};
   const { address, chain } = useAccount();
   const { disconnect } = useDisconnect();
 
@@ -46,21 +52,43 @@ const router = useRouter();
 
           <Badge
             variant="secondary"
-            className="rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-violet-300"
+              onClick={copyAddress}
+            className="cursor-pointer hover:opacity-80 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-2 text-violet-300"
           >
             {mounted
               ? shortenAddress(address)
               : "Loading..."}
           </Badge>
 
-          <Badge
-            variant="secondary"
-            className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-emerald-300"
-          >
-            {mounted
-              ? chain?.name ?? "Unknown Network"
-              : "Loading..."}
-          </Badge>
+         <Badge
+  variant="secondary"
+  className="
+    rounded-full
+    border
+    border-emerald-500/20
+    bg-emerald-500/10
+    px-4
+    py-2
+    text-emerald-300
+    flex
+    items-center
+    gap-2
+  "
+>
+  <span
+    className="
+      h-2.5
+      w-2.5
+      rounded-full
+      bg-emerald-400
+      animate-pulse
+    "
+  />
+
+  {mounted
+    ? chain?.name ?? "Unknown Network"
+    : "Loading..."}
+</Badge>
 
           <Button
             variant="destructive"
