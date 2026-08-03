@@ -8,7 +8,20 @@ export function useRefreshOnNextBlock() {
   const queryClient = useQueryClient();
 
   async function refresh() {
-    await publicClient.waitForBlock();
+    if (!publicClient) return;
+
+    const startingBlock = await publicClient.getBlockNumber();
+
+    await new Promise<void>((resolve) => {
+      const unwatch = publicClient.watchBlockNumber({
+        onBlockNumber: (blockNumber) => {
+          if (blockNumber > startingBlock) {
+            unwatch();
+            resolve();
+          }
+        },
+      });
+    });
 
     await queryClient.invalidateQueries({
       queryKey: ["token-balances"],

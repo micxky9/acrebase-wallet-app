@@ -117,11 +117,11 @@ const { batch } =
   );
   const currentBatch = batch
   ? {
-      quantity: batch[0],
-      price: batch[1],
-      active: batch[2],
-      batchId: batch[3],
-      startIndex: batch[4],
+      quantity: batch.quantity,
+      price: batch.price,
+      active: batch.active,
+      batchId: batch.batch,
+      startIndex: batch.startIndex,
     }
   : null;
 useEffect(() => {
@@ -171,7 +171,7 @@ useEffect(() => {
   return;
 }
 
-const price = batch[1];
+const price = batch.price;
 
 const totalUSDT =
   price * BigInt(data.quantity);
@@ -353,7 +353,7 @@ setOpen(false);
           <div>
 {batch && (
   <p className="text-sm text-gray-400">
-Price per NFT: {Number(batch[1]) / 1e18} USDT
+Price per NFT: {Number(batch.price) / 1e18} USDT
   </p>
 )}
             <Input
